@@ -34,7 +34,7 @@
 		public function ReceiveData($JSONString)
 		{
 			$data = json_decode($JSONString);
-			IPS_LogMessage("IOTest", utf8_decode($data->Buffer));
+			IPS_LogMessage("IOTest", utf8_decode($data));
 			
       			//Parse and write values to our variables
 			ParseData($JSONString);
