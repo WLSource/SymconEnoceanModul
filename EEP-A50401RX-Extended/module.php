@@ -1,5 +1,5 @@
 <?
-	class EEPA50401RXEXT extends IPSModule
+	class EEPA50401RXextended extends IPSModule
 	{
 		public function Create() 
 		{
