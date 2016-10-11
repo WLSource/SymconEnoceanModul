@@ -1,0 +1,14 @@
+{
+	"id": "{c9701734-ab06-432c-91b6-d228c9c67517}",
+	"name": "EnOcean EEP A50401RX extended",
+	"type": 3,
+	"vendor": "",
+	"aliases": 
+	[
+		"EEPA50401RXEXT"
+	],
+	"parentRequirements": ["{A52FEFE9-7858-4B8E-A96E-26E15CB944F7}"],
+	"childRequirements": [],
+	"implemented": ["{66164EB8-3439-4599-B937-A365D7A68567}"],
+	"prefix": "EEP"
+}
