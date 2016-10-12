@@ -36,7 +36,7 @@
 		{
 			//$data = json_decode($JSONString);
 			//IPS_LogMessage("IOTest", utf8_decode($data));
-			IPS_LogMessage("EnoceanGatewayData", $JSONString["DeviceID"]);
+			IPS_LogMessage("EnoceanGatewayData", $JSONString);
       			//Parse and write values to our variables
 			//$this->ParseData($JSONString);
 			$this->SetValueFloat("TMP", $JSONString["DataByte1"]);
