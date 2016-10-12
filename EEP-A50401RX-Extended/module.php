@@ -5,15 +5,15 @@
 		{
 			//Never delete this line!
 			parent::Create();
-			$this->RegisterPropertyFloat("Humidity", 50);
-			$this->RegisterPropertyFloat("Temperature", 20);
-			$this->RegisterPropertyFloat("Battery", 50);
 		}
     
 		public function ApplyChanges()
 		{
 			//Never delete this line!
 			parent::ApplyChanges();
+			$this->RegisterPropertyFloat("Humidity", 50);
+			$this->RegisterPropertyFloat("Temperature", 20);
+			$this->RegisterPropertyFloat("Battery", 50);
 			
 			//Connect to available enocean gateway
 			$this->ConnectParent("{A52FEFE9-7858-4B8E-A96E-26E15CB944F7}");
