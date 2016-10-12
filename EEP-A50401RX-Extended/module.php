@@ -38,7 +38,8 @@
 			$str = print_r($JSONString);
 			IPS_LogMessage("EnoceanGatewayData", $str);
       			//Parse and write values to our variables
-			$this->ParseData($JSONString);
+			//$this->ParseData($JSONString);
+			$this->SendDebug("EnoceanGatewayData", $JSONString, 0);
 		}
     
 		private function ParseData($spezData)
@@ -61,6 +62,28 @@
 		// $spezBuffer[11..14] => SenderID
 		// $spezBuffer[15] => Telegram control bits
 		}
+		
+		protected function SendDebug($Message, $Data, $Format)
+		{
+			if (is_array($Data))
+			{
+			    foreach ($Data as $Key => $DebugData)
+			    {
+						$this->SendDebug($Message . ":" . $Key, $DebugData, 0);
+			    }
+			}
+			else if (is_object($Data))
+			{
+			    foreach ($Data as $Key => $DebugData)
+			    {
+						$this->SendDebug($Message . "." . $Key, $DebugData, 0);
+			    }
+			}
+			else
+			{
+			    parent::SendDebug($Message, $Data, $Format);
+			}
+		} 
     
 	}
 ?>
