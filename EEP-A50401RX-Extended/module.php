@@ -34,12 +34,15 @@
 		
 		public function ReceiveData($JSONString)
 		{
-			//$data = json_decode($JSONString);
+			$data = json_decode($JSONString);
 			//IPS_LogMessage("IOTest", utf8_decode($data));
+			
+			
 			IPS_LogMessage("EnoceanGatewayData", $JSONString);
+			IPS_LogMessage("EnoceanGatewayData",  $data->{'DeviceID'});
       			//Parse and write values to our variables
 			//$this->ParseData($JSONString);
-			$this->SetValueFloat("TMP", $JSONString["DataByte1"]);
+			$this->SetValueFloat("TMP", $data->{'DataByte1'});
 			$this->SendDebug("EnoceanGatewayData", $JSONString, 0);
 		}
     
