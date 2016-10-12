@@ -33,9 +33,10 @@
 		
 		public function ReceiveData($JSONString)
 		{
-			$data = json_decode($JSONString);
-			IPS_LogMessage("IOTest", utf8_decode($data));
-			
+			//$data = json_decode($JSONString);
+			//IPS_LogMessage("IOTest", utf8_decode($data));
+			$str = print_r($JSONString);
+			IPS_LogMessage("EnoceanGatewayData", $str);
       			//Parse and write values to our variables
 			ParseData($JSONString);
 		}
