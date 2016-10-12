@@ -38,7 +38,7 @@
 			$str = print_r($JSONString);
 			IPS_LogMessage("EnoceanGatewayData", $str);
       			//Parse and write values to our variables
-			this->ParseData($JSONString);
+			$this->ParseData($JSONString);
 		}
     
 		private function ParseData($spezData)
