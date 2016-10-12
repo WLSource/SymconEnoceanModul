@@ -11,9 +11,10 @@
 		{
 			//Never delete this line!
 			parent::ApplyChanges();
-			$this->RegisterPropertyFloat("Humidity", 50);
-			$this->RegisterPropertyFloat("Temperature", 20);
-			$this->RegisterPropertyFloat("Battery", 50);
+			
+			$this->RegisterVariableFloat("HUM", "Humidity", "", 0);
+			$this->RegisterVariableFloat("TMP", "Temperature", "", 0);
+			$this->RegisterVariableFloat("VLT", "Battery", "", 0);
 			
 			//Connect to available enocean gateway
 			$this->ConnectParent("{A52FEFE9-7858-4B8E-A96E-26E15CB944F7}");
@@ -39,6 +40,7 @@
 			IPS_LogMessage("EnoceanGatewayData", $str);
       			//Parse and write values to our variables
 			//$this->ParseData($JSONString);
+			$this->SetValueFloat("TMP", $JSONString["DataByte1"]);
 			$this->SendDebug("EnoceanGatewayData", $JSONString, 0);
 		}
     
@@ -61,6 +63,12 @@
 		// $spezBuffer[10] => Databyte 0.Bit1 => T-Sensor Availability [0=not available; 1=available]
 		// $spezBuffer[11..14] => SenderID
 		// $spezBuffer[15] => Telegram control bits
+		}
+		
+		private function SetValueFloat($Ident, $value)
+		{
+			$id = $this->GetIDForIdent($Ident);
+			SetValueFloat($id, $value);
 		}
 		
 		protected function SendDebug($Message, $Data, $Format)
