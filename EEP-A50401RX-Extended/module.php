@@ -36,8 +36,7 @@
 		{
 			//$data = json_decode($JSONString);
 			//IPS_LogMessage("IOTest", utf8_decode($data));
-			$str = print_r($JSONString);
-			IPS_LogMessage("EnoceanGatewayData", $str);
+			IPS_LogMessage("EnoceanGatewayData", $JSONString["DeviceID"]);
       			//Parse and write values to our variables
 			//$this->ParseData($JSONString);
 			$this->SetValueFloat("TMP", $JSONString["DataByte1"]);
@@ -68,7 +67,7 @@
 		private function SetValueFloat($Ident, $value)
 		{
 			$id = $this->GetIDForIdent($Ident);
-			SetValueFloat($id, $value);
+			SetValueFloat($id, floatval($value));
 		}
 		
 		protected function SendDebug($Message, $Data, $Format)
