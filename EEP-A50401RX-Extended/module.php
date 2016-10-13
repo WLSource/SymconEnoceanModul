@@ -5,7 +5,7 @@
 		{
 			//Never delete this line!
 			parent::Create();
-			$this->RegisterPropertyString("ModuleID", "");
+			$this->RegisterPropertyString("DeviceID", "");
 		}
     
 		public function ApplyChanges()
@@ -41,12 +41,12 @@
 			$data = json_decode($JSONString);
 			$this->SendDebug("EnoceanGatewayData", $JSONString, 0);
 
-			IPS_LogMessage("Enocean ModuleID", $data->{'ModuleID'});
-			IPS_LogMessage("ModuleID from Textbox", $this->ReadPropertyString("ModuleID"));
+			IPS_LogMessage("Enocean DeviceID", $data->{'DeviceID'});
+			IPS_LogMessage("DeviceID from Textbox", $this->ReadPropertyString("DeviceID"));
 
-			if (strcmp($data->{'ModuleID'}, $this->ReadPropertyString("ModuleID")) === 0)
+			if (strcmp($data->{'DeviceID'}, $this->ReadPropertyString("DeviceID")) === 0)
 			{
-				IPS_LogMessage("Is Enocean ModuleID and Inputtext ID equal:", "true");
+				IPS_LogMessage("Is Enocean DeviceID and Inputtext DeviceID equal?", "true");
 			}
 			$this->CalcProcessValues($data);
 		}

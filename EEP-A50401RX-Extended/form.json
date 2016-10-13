@@ -1,6 +1,6 @@
 {
 	"elements":
 	[
-		{ "name": "ModuleID", "type": "ValidationTextBox", "caption": "ModuleID:" }
+		{ "name": "DeviceID", "type": "ValidationTextBox", "caption": "DeviceID:" }
 	]
 }
