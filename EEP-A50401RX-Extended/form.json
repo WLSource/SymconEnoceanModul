@@ -1,0 +1,6 @@
+{
+	"elements":
+	[
+		{ "name": "ModuleID", "type": "ValidationTextBox", "caption": "ModuleID:" }
+	]
+}
