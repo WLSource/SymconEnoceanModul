@@ -5,6 +5,7 @@
 		{
 			//Never delete this line!
 			parent::Create();
+			$this->RegisterPropertyString("ModuleID", "");
 		}
     
 		public function ApplyChanges()
@@ -20,6 +21,7 @@
 			
 			//Connect to available enocean gateway
 			$this->ConnectParent("{A52FEFE9-7858-4B8E-A96E-26E15CB944F7}");
+			
 		}
 		
 		/**
@@ -38,6 +40,14 @@
 		{
 			$data = json_decode($JSONString);
 			$this->SendDebug("EnoceanGatewayData", $JSONString, 0);
+
+			IPS_LogMessage("Enocean ModuleID", $data->{'ModuleID'});
+			IPS_LogMessage("ModuleID from Textbox", $this->ReadPropertyString("ModuleID"));
+
+			if (strcmp($data->{'ModuleID'}, $this->ReadPropertyString("ModuleID")) === 0)
+			{
+				IPS_LogMessage("Is Enocean ModuleID and Inputtext ID equal:", "true");
+			}
 			$this->CalcProcessValues($data);
 		}
 		
