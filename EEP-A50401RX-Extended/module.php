@@ -37,10 +37,6 @@
 		public function ReceiveData($JSONString)
 		{
 			$data = json_decode($JSONString);
-			
-			IPS_LogMessage("EnoceanGatewayData",  $data->{'DeviceID'});
-			//$this->ParseData($JSONString);
-			$this->SetValueFloat("TMP", $data->{'DataByte1'});
 			$this->SendDebug("EnoceanGatewayData", $JSONString, 0);
 			$this->CalcProcessValues($data);
 		}
@@ -69,7 +65,7 @@
 			// Sättigungsdampfdruck in hPa
 			$saettigungsDampfdruck = $c1 * exp(($c2 * $temperature) / ($c3 + $temperature));
 			$dampfdruck = $saettigungsDampfdruck *  $humidity / 100;
-			$taupunkt = (log($dampfdruck / $c1) * $c3) / ($c2 - log($saettigungsDampfdruck / $c1));
+			$dewpoint = (log($dampfdruck / $c1) * $c3) / ($c2 - log($saettigungsDampfdruck / $c1));
 			$absHum = $mw / $uniGaskonstante * $saettigungsDampfdruck / $tempInK * 100;
 			
 			// Write calculated values to registered variables
@@ -77,33 +73,7 @@
 			$this->SetValueFloat("HUM", $humidity);
 			$this->SetValueFloat("VLT", $goldCapVoltage);
 			$this->SetValueFloat("AHUM", $absHum);
-			$this->SetValueFloat("DEW", $taupunkt);
-		}
-		
-		private function CalcDewpoint($spezTemperature, $spezRelHumidity)
-		{
-
-		}
-	 
-		private function ParseData($spezData)
-		{
-		// $searchPattern2 = '55 00 0a 07 01 eb a5';
-		// $spezBuffer[0] => Sync Byte => 0x55;
-		// $spezBuffer[1] => HighByte DataLength
-		// $spezBuffer[2] => LowByte DataLength => 10 Databytes
-		// $spezBuffer[3] => Optional Length
-		// $spezBuffer[4] => Packet Type => 01=RADIO_ERP1
-		// $spezBuffer[5] => CRC8 from spezData[1] to spezData[4]
-		// $spezBuffer[6] => RadioType => 0xA5 => Radio type 4BS
-		// $spezBuffer[7] => Databyte 3 => Voltage of Goldcap (usually this byte is not used!)
-		// $spezBuffer[8] => Databyte 2 => Humidity
-		// $spezBuffer[9] => Databyte 1 => Temperature    
-		// $spezBuffer[10] => Databyte 0.Bit7 ... Bit4 => not unsed
-		// $spezBuffer[10] => Databyte 0.Bit3 => [0=Teach-in telegram; 1=Data telegram]  
-		// $spezBuffer[10] => Databyte 0.Bit2 => not used    
-		// $spezBuffer[10] => Databyte 0.Bit1 => T-Sensor Availability [0=not available; 1=available]
-		// $spezBuffer[11..14] => SenderID
-		// $spezBuffer[15] => Telegram control bits
+			$this->SetValueFloat("DEW", $dewpoint);
 		}
 		
 		private function SetValueFloat($Ident, $value)
@@ -133,6 +103,5 @@
 			    parent::SendDebug($Message, $Data, $Format);
 			}
 		} 
-    
 	}
 ?>
