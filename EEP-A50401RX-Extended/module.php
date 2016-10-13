@@ -13,11 +13,11 @@
 			//Never delete this line!
 			parent::ApplyChanges();
 			
-			$this->RegisterVariableFloat("HUM", "Humidity", "", 0);
-			$this->RegisterVariableFloat("TMP", "Temperature", "", 0);
-			$this->RegisterVariableFloat("VLT", "Battery", "", 0);
-			$this->RegisterVariableFloat("AHUM", "Abs. Humidity", "", 0);
-			$this->RegisterVariableFloat("DEW", "Dewpoint", "", 0);
+			$this->RegisterVariableFloat("HUM", "Rel. Luftfeuchtigkeit", "", 0);
+			$this->RegisterVariableFloat("TMP", "Temperatur", "", 0);
+			$this->RegisterVariableFloat("VLT", "Batteriespannung", "", 0);
+			$this->RegisterVariableFloat("AHUM", "Abs. Luftfeuchtigkeit", "", 0);
+			$this->RegisterVariableFloat("DEW", "Taupunkt", "", 0);
 			
 			//Connect to available enocean gateway
 			$this->ConnectParent("{A52FEFE9-7858-4B8E-A96E-26E15CB944F7}");
