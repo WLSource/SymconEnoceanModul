@@ -43,9 +43,9 @@
 		
 		private function CalcProcessValues($spezData)
 		{
-			// temperatue = tempValue / 250 * 40 °C
+			// temperature = tempValue / 250 * 40 °C
 			$temperature = floatval($spezData->{'DataByte1'}); 
-			$temperature = $temperatue / 250 * 40;
+			$temperature = $temperature / 250 * 40;
 			
 			// humidity = humValue / 250 * 100 %
 			$humidity = floatval($spezData->{'DataByte2'}); 
