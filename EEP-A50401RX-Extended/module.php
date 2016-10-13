@@ -41,14 +41,15 @@
 			$data = json_decode($JSONString);
 			$this->SendDebug("EnoceanGatewayData", $JSONString, 0);
 
-			IPS_LogMessage("Enocean DeviceID", $data->{'DeviceID'});
-			IPS_LogMessage("DeviceID from Textbox", $this->ReadPropertyString("DeviceID"));
-
 			if (strcmp($data->{'DeviceID'}, $this->ReadPropertyString("DeviceID")) === 0)
 			{
-				IPS_LogMessage("Is Enocean DeviceID and Inputtext DeviceID equal?", "true");
+				$this->CalcProcessValues($data);
 			}
-			$this->CalcProcessValues($data);
+			else IPS_LogMessage("EEPA50401RXextended Device IDs",
+								"Enocean Sensor DeviceID: " . $data->{'DeviceID'} . 
+							    " and SymconModul DeviceID: " . $this->ReadPropertyString("DeviceID") . 
+								" are not equal");
+			
 		}
 		
 		private function CalcProcessValues($spezData)
