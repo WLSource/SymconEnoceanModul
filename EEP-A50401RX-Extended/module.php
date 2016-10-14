@@ -13,11 +13,18 @@
 			//Never delete this line!
 			parent::ApplyChanges();
 			
-			$this->RegisterVariableFloat("HUM", "Rel. Luftfeuchtigkeit", "", 0);
-			$this->RegisterVariableFloat("TMP", "Temperatur", "", 0);
-			$this->RegisterVariableFloat("VLT", "Batteriespannung", "", 0);
-			$this->RegisterVariableFloat("AHUM", "Abs. Luftfeuchtigkeit", "", 0);
-			$this->RegisterVariableFloat("DEW", "Taupunkt", "", 0);
+			$this->RegisterProfileFloat("AbsHumidity", "", "", " g/m³", NULL, NULL, NULL, 2);
+			$this->RegisterProfileFloat("RelHumidity", "", "", " %", NULL, NULL, NULL, 1);
+			$this->RegisterProfileFloat("Roomtemperature", "", "", " °C", 5, 30, NULL, 1);
+			$this->RegisterProfileFloat("Dewpoint", "", "", " °C", 0, 30, NULL, 1);
+			$this->RegisterProfileFloat("Voltage", "", "", " V", 1, 4, NULL, 2);
+			
+			$this->RegisterVariableFloat("HUM", "Rel. Luftfeuchtigkeit", "RelHumidity", 0);
+			$this->RegisterVariableFloat("TMP", "Temperatur", "Roomtemperature", 0);
+			$this->RegisterVariableFloat("VLT", "Batteriespannung", "Voltage", 0);
+			$this->RegisterVariableFloat("AHUM", "Abs. Luftfeuchtigkeit", "AbsHumidity", 0);
+			$this->RegisterVariableFloat("DEW", "Taupunkt", "Dewpoint", 0);
+			
 			
 			//Connect to available enocean gateway
 			$this->ConnectParent("{A52FEFE9-7858-4B8E-A96E-26E15CB944F7}");
@@ -93,6 +100,25 @@
 		{
 			$id = $this->GetIDForIdent($Ident);
 			SetValueFloat($id, floatval($value));
+		}
+		
+		protected function RegisterProfileFloat($Name, $Icon, $Prefix, $Suffix, $MinValue, $MaxValue, $StepSize, $Digits)
+		{
+			if (!IPS_VariableProfileExists($Name))
+			{
+				IPS_CreateVariableProfile($Name, 2);
+			}
+			else
+			{
+				$profile = IPS_GetVariableProfile($Name);
+				if ($profile['ProfileType'] != 2)
+					throw new Exception("Variable profile type does not match for profile " . $Name);
+			}
+			IPS_SetVariableProfileIcon($Name, $Icon);
+			IPS_SetVariableProfileText($Name, $Prefix, $Suffix);
+			IPS_SetVariableProfileValues($Name, $MinValue, $MaxValue, $StepSize);
+			IPS_SetVariableProfileDigits($Name, $Digits);
+			
 		}
 		
 		protected function SendDebug($Message, $Data, $Format)
