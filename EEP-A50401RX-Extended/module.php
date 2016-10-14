@@ -21,10 +21,9 @@
 			
 			//Connect to available enocean gateway
 			$this->ConnectParent("{A52FEFE9-7858-4B8E-A96E-26E15CB944F7}");
-			
 		}
 		
-		/**
+		/*
 		* This function will be available automatically after the module is imported with the module control.
 		* Using the custom prefix this function will be callable from PHP and JSON-RPC through:
 		*
@@ -34,13 +33,13 @@
 		*{
 		*	$this->SendDataToParent(json_encode(Array("DataID" => "{B87AC955-F258-468B-92FE-F4E0866A9E18}", "Buffer" => $Text)));
 		*}
-   		 */
+   	*/
 		
 		public function ReceiveData($JSONString)
 		{
 			$data = json_decode($JSONString);
 			$this->SendDebug("EnoceanGatewayData", $JSONString, 0);
-
+			// Check if received enocean deviceID is equal to entered deviceID in moduel configuration
 			if (strcmp($data->{'DeviceID'}, $this->ReadPropertyString("DeviceID")) === 0)
 			{
 				$this->CalcProcessValues($data);
@@ -62,7 +61,7 @@
 			$humidity = floatval($spezData->{'DataByte2'}); 
 			$humidity = $humidity / 250 * 100;
 			
-			// goldCapVoltage = voltageValue / 255 * 1,8V * 4
+			// goldCapVoltage = voltageValue / 255 * 1,8V * 4 - usually DataByte3 is not used in enocean standard!
 			$goldCapVoltage = floatval($spezData->{'DataByte3'});
 			$goldCapVoltage = $goldCapVoltage / 255 * 1.8 * 4;
 			
@@ -71,13 +70,16 @@
 			$c2 = 17.08085;                  // °C
 			$c3 = 234.175;                   // °C
 			$mw = 18.016;                    // g/mol
-			$uniGaskonstante = 8.3144598;    // J/(mol*K)
+			$uniGasConstant = 8.3144598;    	// J/(mol*K)
 			$tempInK = $temperature + 273.15;
-			// Sättigungsdampfdruck in hPa
-			$saettigungsDampfdruck = $c1 * exp(($c2 * $temperature) / ($c3 + $temperature));
-			$dampfdruck = $saettigungsDampfdruck *  $humidity / 100;
-			$dewpoint = (log($dampfdruck / $c1) * $c3) / ($c2 - log($saettigungsDampfdruck / $c1));
-			$absHum = $mw / $uniGaskonstante * $saettigungsDampfdruck / $tempInK * 100;
+			// Calculate saturationVaporPressure in hPa
+			$saturationVaporPressure = $c1 * exp(($c2 * $temperature) / ($c3 + $temperature));
+			// Calculate vaporPressure in hPa
+			$vaporPressure = $saturationVaporPressure *  $humidity / 100;
+			// Calculate dewpoint in °C
+			$dewpoint = (log($vaporPressure / $c1) * $c3) / ($c2 - log($saturationVaporPressure / $c1));
+			// Calculate absolute humidity in g/m³
+			$absHum = $mw / $uniGasConstant * $vaporPressure / $tempInK * 100;
 			
 			// Write calculated values to registered variables
 			$this->SetValueFloat("TMP", $temperature);
